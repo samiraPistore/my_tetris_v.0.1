@@ -25,7 +25,7 @@ class GameController {
   // armazenamento dos pontos
   int score = 0;
   
-  // PROPRIEDADES DA CLASSE (Deixamos aqui para o app inteiro enxergar)
+  // PROPRIEDADES DA CLASS 
   bool isStarting = true;
   bool isGameOver = false; 
   int startCount = 3;
@@ -33,7 +33,6 @@ class GameController {
   // matriz que representa o tabuleiro
   List<List<int>> board = List.generate(10, (_) => List.generate(6, (_) => 0));
 
-  // CONTROLE DE TEMPO
   Timer? timer;
 
   // Atualiza a interface sempre que o estado do jogo muda.
@@ -46,7 +45,6 @@ class GameController {
 
   // Contagem regressiva
   void startGameCountdown() {
-    // REMOVIDO: as redeclarações com "bool" e "int" que causavam o bug.
     startCount = 3;
     isStarting = true;
     isGameOver = false; 
@@ -61,7 +59,6 @@ class GameController {
         isStarting = false; // Aqui libera o jogo de fato
         start();
       }
-
       onUpdate();
     });
   }
@@ -73,11 +70,10 @@ class GameController {
   }
 
   // Loop principal
-  int gameSpeed = 500;
   void start() {
     timer?.cancel();
 
-    timer = Timer.periodic(Duration(milliseconds: gameSpeed), (_) {
+    timer = Timer.periodic(Duration(milliseconds:500), (_) {
       if (canMoveDown()) {
         currentPiece.row++;
       } else {
@@ -94,13 +90,8 @@ class GameController {
     });
   }
 
-  void setSpeed(int milliseconds) {
-    gameSpeed = milliseconds;
-    start();
-  }
 
   // Fixa a peça atual no tabuleiro e gera uma nova peça.
-   // Fixa a peça atual no tabuleiro e gera uma nova peça.
   void lockPiece() {
     for (int r = 0; r < currentPiece.shape.length; r++) {
       for (int c = 0; c < currentPiece.shape[r].length; c++) {

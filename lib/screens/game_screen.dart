@@ -23,8 +23,9 @@ class _GamepageState extends State<Gamepage> {
 
   StreamSubscription? accelerometerSub;
 
-  bool canTiltMove = true;
-  bool gameFinished = false;
+ 
+  bool canTiltMove = true; //controlar se pode inclinar e  mover
+  bool gameFinished = false;//controlar se o jogo terminou
 
   @override
   void initState() {
@@ -45,6 +46,8 @@ class _GamepageState extends State<Gamepage> {
     );
   }
 
+
+  //Configuraçoes do acelerômetro
   void _setupAccelerometer() {
     accelerometerSub = accelerometerEventStream().listen((event) {
       if (!canTiltMove) return;
@@ -68,7 +71,9 @@ class _GamepageState extends State<Gamepage> {
       }
     });
   }
+  
 
+  //função encerra o jogo
   Future<void> finishGame(int score) async {
     if (gameFinished) return;
 
@@ -79,7 +84,9 @@ class _GamepageState extends State<Gamepage> {
     await rankingService.saveScore(widget.playerName, score);
 
     if (!mounted) return;
+    
 
+    //mostrar pop up quando jogo termina
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -93,7 +100,7 @@ class _GamepageState extends State<Gamepage> {
                 Navigator.pop(context); // fecha dialog
                 Navigator.pop(context); // volta tela
               },
-              child: const Text('OK'),
+              child: const Text('OK', style: TextStyle(color: Colors.black),),
             ),
           ],
         );

@@ -2,7 +2,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class RankingService {
   static const String _rankingKey = 'ranking';
-
+  
+  //funçã para salvar o recorde
   Future<void> saveScore(String playerName, int score) async {
     final prefs = await SharedPreferences.getInstance();
 
@@ -12,7 +13,9 @@ class RankingService {
 
     await prefs.setStringList(_rankingKey, ranking);
   }
+  
 
+  //função para carregar recorde na lista
   Future<List<String>> loadScores() async {
     final prefs = await SharedPreferences.getInstance();
 

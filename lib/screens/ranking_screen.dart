@@ -11,8 +11,10 @@ class Rankingpage extends StatefulWidget {
 }
 
 class _RankingpageState extends State<Rankingpage> {
+  //instância do service
   final rankingService = RankingService();
 
+  //lista local armazenar informações ranking
   List<String> ranking = [];
 
   @override
@@ -36,47 +38,49 @@ class _RankingpageState extends State<Rankingpage> {
 
   @override
   Widget build(BuildContext context) {
+  
     return Scaffold(
-      backgroundColor:Theme.of(context).colorScheme.surface,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       body: SafeArea(
         child: Center(
           child: Padding(
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  const Text(
-                    'RANKING PONTUAÇÕES',
-                    style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
-                  ),
-                  Expanded(
-                    child: ConstrainedBox(
-                      constraints: const BoxConstraints(maxWidth: 500),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          border: Border.all(width: 2),
-                        ),
-                        child: Scorelist(ranking: ranking),
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                const Text(
+                  'RANKING PONTUAÇÕES',
+                  style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+                ),
+
+                Expanded(
+                  child: ConstrainedBox(
+                    constraints: const BoxConstraints(maxWidth: 500),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        border: Border.all(width: 2),
                       ),
+                      child: Scorelist(ranking: ranking),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(20),
-                    child: BtnShape(
-                      text: 'VOLTAR PARA HOME',
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                    ),
+                ),
+
+                Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: BtnShape(
+                    text: 'VOLTAR PARA HOME',
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
+          ),
         ),
       ),
-    
     );
   }
 }

@@ -6,8 +6,6 @@ class Piece {
   int col;
   final Color color;
 
-
-
   //matriz para definir as formas
   List<List<int>> shape;
 

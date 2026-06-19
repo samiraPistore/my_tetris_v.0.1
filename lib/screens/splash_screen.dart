@@ -14,20 +14,17 @@ class _SplashscreenState extends State<Splashscreen> {
   @override
   void initState() {
     super.initState();
+    
+    //tempo de aparição da tela
+    Timer(const Duration(seconds: 3), () {
+      //garante que o widget foi montado na tela
+      if (!mounted) return;
 
-    Timer(
-  const Duration(seconds: 3),
-  () {
-    if (!mounted) return;
-
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (_) => const HomePage(),
-      ),
-    );
-  },
-);
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => const HomePage()),
+      );
+    });
   }
 
   @override

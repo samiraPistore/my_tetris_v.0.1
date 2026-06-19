@@ -26,7 +26,7 @@ class _HomePageState extends State<HomePage> {
     super.dispose();
   }
 
-  //Função que valida o input e envia paaa págino de jogo
+  //Função que valida o input e envia para págino de jogo
   void _startGame() {
     if (_formKey.currentState!.validate()) {
       AppData.playerName = _nameController.text.trim();

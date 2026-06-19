@@ -9,73 +9,72 @@ class Scorelist extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: Colors.white,
-      child: Column(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(16),
-            child: const Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      child: ranking.isEmpty
+          ? Center(
+              child: Text(
+                'Nenhuma pontução encontrada. Jogue para alcançar um novo record',
+              ),
+            )
+          : Column(
               children: [
-                Text(
-                  'POSIÇÃO',
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                Container(
+                  padding: const EdgeInsets.all(16),
+                  child: const Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'POSIÇÃO',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        'JOGADOR',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        'PONTUAÇÃO',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                        textAlign: TextAlign.end,
+                      ),
+                    ],
+                  ),
                 ),
-                Text(
-                  'JOGADOR',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                Text(
-                  'PONTUAÇÃO',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                  textAlign: TextAlign.end,
+
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: ranking.length,
+                    itemBuilder: (context, index) {
+                      final parts = ranking[index].split('|');
+
+                      return Container(
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 12,
+                          horizontal: 8,
+                        ),
+                        decoration: const BoxDecoration(
+                          border: Border(bottom: BorderSide()),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(flex: 1, child: Text('${index + 1}º')),
+
+                            Expanded(flex: 3, child: Text(parts[0])),
+
+                            Expanded(
+                              flex: 2,
+                              child: Text(
+                                '${parts[1]} pts',
+                                textAlign: TextAlign.end,
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
                 ),
               ],
             ),
-          ),
-          Expanded(
-            child: ListView.builder(
-              itemCount: ranking.length,
-              itemBuilder: (context, index) {
-                final parts = ranking[index].split('|');
-            
-                return Container(
-  padding: const EdgeInsets.symmetric(
-    vertical: 12,
-    horizontal: 8,
-  ),
-  decoration: const BoxDecoration(
-    border: Border(
-      bottom: BorderSide(),
-    ),
-  ),
-  child: Row(
-    children: [
-      Expanded(
-        flex: 1,
-        child: Text('${index + 1}º'),
-      ),
-
-      Expanded(
-        flex: 3,
-        child: Text(parts[0]),
-      ),
-
-      Expanded(
-        flex: 2,
-        child: Text(
-          '${parts[1]} pts',
-          textAlign: TextAlign.end,
-        ),
-      ),
-    ],
-  ),
-
-                );
-              },
-            ),
-          ),
-        ],
-      ),
     );
   }
 }
