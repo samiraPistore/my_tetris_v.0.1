@@ -4,11 +4,7 @@ class BtnShape extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;
 
-  const BtnShape({
-    super.key,
-    required this.text,
-    required this.onPressed,
-  });
+  const BtnShape({super.key, required this.text, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -18,8 +14,12 @@ class BtnShape extends StatelessWidget {
         backgroundColor: Theme.of(context).colorScheme.secondary,
         foregroundColor: Theme.of(context).colorScheme.onSurface,
         padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 14),
+
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12), // Arredondamento bem menor
+        ),
       ),
-      child: Text(text),
+      child: Text(text, style: TextStyle(fontSize: 20),),
     );
   }
 }

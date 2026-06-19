@@ -1,11 +1,12 @@
 import 'dart:async';
 import 'dart:math';
-import '../models/pieceModel.dart';
+import '../models/piece_model.dart';
 
 class GameController {
-  //GERAR PEÇA ALEATÓTIA
+  // GERAR PEÇA ALEATÓRIA
   final Random _random = Random();
 
+  // lista com as formas de peças
   final List<Piece Function()> pieces = [
     PiecesShape.lShape,
     PiecesShape.line,
@@ -13,51 +14,70 @@ class GameController {
     PiecesShape.zShape,
   ];
 
+  // função que vai retornar a peça aleatória
   Piece getRandomPiece() {
     return pieces[_random.nextInt(pieces.length)]();
   }
 
+  // peça atual
   late Piece currentPiece;
-  //armazenamento dos pontos
+
+  // armazenamento dos pontos
   int score = 0;
+  
+  // PROPRIEDADES DA CLASSE (Deixamos aqui para o app inteiro enxergar)
   bool isStarting = true;
+  bool isGameOver = false; 
   int startCount = 3;
 
-  //matriz
+  // matriz que representa o tabuleiro
   List<List<int>> board = List.generate(10, (_) => List.generate(6, (_) => 0));
 
-  //CONTROLE DE TEMPO
+  // CONTROLE DE TEMPO
   Timer? timer;
 
+  // Atualiza a interface sempre que o estado do jogo muda.
   final void Function() onUpdate;
+
+  // Notifica quando ocorre Game Over.
   final void Function(int score) onGameOver;
 
   GameController({required this.onUpdate, required this.onGameOver});
 
-  //Contagem regressiva
+  // Contagem regressiva
   void startGameCountdown() {
+    // REMOVIDO: as redeclarações com "bool" e "int" que causavam o bug.
     startCount = 3;
     isStarting = true;
+    isGameOver = false; 
+
     currentPiece = getRandomPiece();
 
-    //contagem inicial antes do inicio do jogo
     Timer.periodic(const Duration(seconds: 1), (timer) {
       startCount--;
 
-      //quando contagem for 0 começa o jogo
       if (startCount <= 0) {
         timer.cancel();
-        isStarting = false;
-        start(); //
+        isStarting = false; // Aqui libera o jogo de fato
+        start();
       }
 
       onUpdate();
     });
   }
 
-  //Começar jogo
+  // Interrompe o loop do jogo.
+  void stop() {
+    isGameOver = true; // Trava os movimentos quando parar manualmente ou perder
+    timer?.cancel();
+  }
+
+  // Loop principal
+  int gameSpeed = 500;
   void start() {
-    timer = Timer.periodic(const Duration(milliseconds: 500), (_) {
+    timer?.cancel();
+
+    timer = Timer.periodic(Duration(milliseconds: gameSpeed), (_) {
       if (canMoveDown()) {
         currentPiece.row++;
       } else {
@@ -74,10 +94,13 @@ class GameController {
     });
   }
 
-  void stop() {
-    timer?.cancel();
+  void setSpeed(int milliseconds) {
+    gameSpeed = milliseconds;
+    start();
   }
 
+  // Fixa a peça atual no tabuleiro e gera uma nova peça.
+   // Fixa a peça atual no tabuleiro e gera uma nova peça.
   void lockPiece() {
     for (int r = 0; r < currentPiece.shape.length; r++) {
       for (int c = 0; c < currentPiece.shape[r].length; c++) {
@@ -87,12 +110,13 @@ class GameController {
       }
     }
 
-    //score por peça
+    // pontuação por peça
     score++;
 
-    currentPiece = getRandomPiece(); 
+    currentPiece = getRandomPiece();
   }
-  
+
+  // Verifica se a peça pode continuar descendo
   bool canMoveDown() {
     for (int r = 0; r < currentPiece.shape.length; r++) {
       for (int c = 0; c < currentPiece.shape[r].length; c++) {
@@ -110,6 +134,24 @@ class GameController {
     return true;
   }
 
+  // Verifica se a peça pode ir para o lado
+  bool canMoveSide(int direction) {
+    for (int r = 0; r < currentPiece.shape.length; r++) {
+      for (int c = 0; c < currentPiece.shape[r].length; c++) {
+        if (currentPiece.shape[r][c] == 1) {
+          int nextRow = currentPiece.row + r;
+          int nextCol = currentPiece.col + c + direction;
+          if (nextCol < 0 || nextCol >= 6) {
+            return false;
+          }
+          if (board[nextRow][nextCol] == 1) return false;
+        }
+      }
+    }
+    return true;
+  }
+
+  // Verifica se a posição inicial da nova peça está bloqueada.
   bool _isSpawnBlocked() {
     for (int r = 0; r < currentPiece.shape.length; r++) {
       for (int c = 0; c < currentPiece.shape[r].length; c++) {
@@ -121,5 +163,24 @@ class GameController {
       }
     }
     return false;
+  }
+
+  // Funções de movimentação 
+  void movLeft() {
+    if (isStarting || isGameOver) return; 
+
+    if (canMoveSide(-1)) {
+      currentPiece.col--;
+      onUpdate();
+    }
+  }
+
+  void movRight() {
+    if (isStarting || isGameOver) return; 
+
+    if (canMoveSide(1)) {
+      currentPiece.col++;
+      onUpdate();
+    }
   }
 }

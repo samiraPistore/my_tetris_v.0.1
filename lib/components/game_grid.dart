@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:my_tetris_1/models/pieceModel.dart';
+
+import 'package:my_tetris_1/models/piece_model.dart';
 
 class GameGrid extends StatelessWidget {
   final Piece currentPiece;
@@ -50,7 +51,7 @@ class GameGrid extends StatelessWidget {
                 color: isPiece || isFixed
                     ? Colors.blue
                     : Color(0xFFEDEDED),
-                border: Border.all(color: Colors.grey.shade400),
+                border: Border.all(color: Colors.black),
                 borderRadius: BorderRadius.all(Radius.circular(4))
               ),
             );

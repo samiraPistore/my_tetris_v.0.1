@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:my_tetris_1/pages/gamePage.dart';
-import 'package:my_tetris_1/pages/homePage.dart';
-import 'package:my_tetris_1/pages/rankingPage.dart';
-import 'package:my_tetris_1/routes/appRoutes.dart';
+import 'package:my_tetris_1/screens/home_screen.dart';
+import 'package:my_tetris_1/screens/ranking_screen.dart';
+import 'package:my_tetris_1/screens/splash_screen.dart';
+import 'package:my_tetris_1/routes/app_routes.dart';
 
 
 void main() {
   // Garante que os widgets do sistema foram inicializados
   WidgetsFlutterBinding.ensureInitialized();
-  
+
+  SystemChrome.setEnabledSystemUIMode(
+    SystemUiMode.immersiveSticky,
+  );
   // Trava o app inteiro no modo Retrato
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
@@ -39,10 +42,10 @@ class MyApp extends StatelessWidget {
         ),
       ),
 
-      initialRoute: AppRoutes.home,
+      initialRoute: AppRoutes.splash,
       routes: {
+        AppRoutes.splash: (ctx) => Splashscreen(),
         AppRoutes.home: (ctx) => HomePage(),
-        AppRoutes.game: (ctx) => Gamepage(),
         AppRoutes.ranking: (ctx) => Rankingpage(),
       },
     );

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:my_tetris_1/components/btnShape.dart';
-import 'package:my_tetris_1/routes/appRoutes.dart';
+import 'package:my_tetris_1/components/btn_shape.dart';
+import 'package:my_tetris_1/screens/game_screen.dart';
+import 'package:my_tetris_1/routes/app_routes.dart';
 
 class AppData {
   static String playerName = '';
@@ -14,20 +15,28 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  //controladores do input
   final _nameController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
+  // Libera os recursos utilizados pelo controller quando a tela é destruída.
   @override
   void dispose() {
     _nameController.dispose();
     super.dispose();
   }
 
+  //Função que valida o input e envia paaa págino de jogo
   void _startGame() {
     if (_formKey.currentState!.validate()) {
       AppData.playerName = _nameController.text.trim();
 
-      Navigator.of(context).pushNamed(AppRoutes.game);
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => Gamepage(playerName: _nameController.text.trim()),
+        ),
+      );
     }
   }
 
@@ -51,9 +60,9 @@ class _HomePageState extends State<HomePage> {
                 'INFORME SEU NOME',
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
-      
+
               const SizedBox(height: 20),
-      
+
               Form(
                 key: _formKey,
                 child: SizedBox(
@@ -63,7 +72,6 @@ class _HomePageState extends State<HomePage> {
                     decoration: const InputDecoration(
                       labelText: 'Nome',
                       border: OutlineInputBorder(),
-                      
                     ),
                     validator: (value) {
                       if (value == null || value.trim().isEmpty) {
@@ -74,19 +82,24 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ),
-      
+
               const SizedBox(height: 40),
-      
+
               SizedBox(
-                width: 200,
+                width: MediaQuery.of(context).size.width *0.7,
                 child: BtnShape(text: 'INICIAR', onPressed: _startGame),
               ),
-      
+
               const SizedBox(height: 12),
-      
+
               SizedBox(
-                width: 200,
-                child: BtnShape(text: 'RANKING', onPressed: () {Navigator.of(context).pushNamed(AppRoutes.ranking);  },),
+                width: MediaQuery.of(context).size.width *0.7,
+                child: BtnShape(
+                  text: 'RANKING',
+                  onPressed: () {
+                    Navigator.of(context).pushNamed(AppRoutes.ranking);
+                  },
+                ),
               ),
             ],
           ),
